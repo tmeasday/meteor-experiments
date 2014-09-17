@@ -1,15 +1,16 @@
-Documents = new Meteor.Collection('documents');
-
 if (Meteor.isClient) {
   Meteor.subscribe('documents');
   
   UI.registerHelper('debugInfo', function() {
-    var doc = Documents.findOne() || {data: ''};
-    return 'Documents: ' + Documents.find().count() + ' of size: ' + doc.data.length;
+    return 'none';
+    // var doc = Documents.findOne() || {data: ''};
+    // return 'Documents: ' + Documents.find().count() + ' of size: ' + doc.data.length;
   });
 }
 
 if (Meteor.isServer) {
+  Documents = new Meteor.Collection('documents');
+
   //~10k of data by default
   var NUM = process.env.DOCUMENT_NUMBER || 200;
   var SIZE = process.env.DOCUMENT_SIZE || 100;
