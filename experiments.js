@@ -6,6 +6,23 @@ if (Meteor.isClient) {
     // var doc = Documents.findOne() || {data: ''};
     // return 'Documents: ' + Documents.find().count() + ' of size: ' + doc.data.length;
   });
+  
+  UI.registerHelper('connectionFailures', function() {
+    return Session.get('connectionFailures');
+  });
+  
+  var startup = new Date(), hasConnected = false;
+  Tracker.autorun(function() {
+    if (Meteor.connection.status().connected) {
+      hasConnected = true;
+    } else if (hasConnected) {
+      var failures = Tracker.nonreactive(function() { 
+        return Session.get('connectionFailures') || []
+      });
+      failures.push(new Date() - startup);
+      Session.set('connectionFailures', failures);
+    }
+  });
 }
 
 if (Meteor.isServer) {

@@ -5,4 +5,9 @@
 <body>
   <h1>Experiment 1</h1>
   <pre>{{debugInfo}}</pre>
+  <ol>
+    {{#each connectionFailures}}
+      <li>After {{this}} ms</li>
+    {{/each}}
+  </ol>
 </body>
